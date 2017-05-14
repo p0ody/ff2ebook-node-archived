@@ -1,0 +1,26 @@
+{
+  "compilerOptions": {
+    "plugins": [{
+      "name": "tslint-language-service"
+    }],
+    "outDir": "dist",
+    "allowJs": false,
+    "target": "es5",
+    "module": "commonjs",
+    "watch": false,
+    "strict": true,
+    "sourceMap": true,
+    "rootDir": "src",
+    "lib": [
+      "dom",
+      "es5"
+    ],
+    "baseUrl": "."
+  },
+  "include": [
+    "./**/*.ts"
+  ],
+  "exclude": [
+    "node_modules"
+  ]
+}
