@@ -3,8 +3,8 @@ import { ErrorHandler } from "./ErrorHandler";
 import { Fic } from "./Fic";
 import { BaseFic } from "./BaseFic";
 import { Epub } from "./Epub";
-let fs = require("fs");
-let path = require("path");
+import * as path from "path";
+import * as fs from "fs";
 
 export function createEpub(fic: BaseFic, callback: (a?: any, b?:any) => void) : void
 {
@@ -15,8 +15,8 @@ export function createMobi(mobipath: string, callback: (a?: any, b?:any) => void
 {
     //let self = this;
     let exec = require('child_process').execFile;
-    let epub = path.basename(path);
-    let mobi = process.env.ARCHIVE_DIR +"/"+ path.basename(path, ".epub") + ".mobi";
+    let epub = path.basename(mobipath);
+    let mobi = process.env.ARCHIVE_DIR +"/"+ path.basename(mobipath, ".epub") + ".mobi";
 
     let next = function()
     {

@@ -108,9 +108,9 @@ export class Fic
     {
         var self = this;
         self._event.emit("fileReady", {
-            source: this.getSource(),
+            source: Utils.sourceToShortString(this.getSource()),
             id: this.getHandler().getFicId(),
-            fileType: this.getFileType()
+            fileType: Utils.fileTypeToString(this.getFileType())
         });
         if (!self.getSendEmail() || self.getEmailAddress().length <= 0)
             return;
