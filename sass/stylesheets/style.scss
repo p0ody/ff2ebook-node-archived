@@ -1,0 +1,187 @@
+@import "node_modules/bulma/sass/utilities/initial-variables";
+@import "node_modules/bulma/sass/utilities/functions";
+@import url('https://fonts.googleapis.com/css?family=Ubuntu:400,500');
+
+$primary: rgb(245, 245, 245);
+$primary-invert: findColorInvert($primary);
+$logoColor: rgb(157, 255, 31);
+$border-color: rgba(200, 200, 200, .7);
+$lightColor: lighten($primary-invert, 50%);
+$hoverAnimate: all 0.4s ease-in-out;
+
+$family-primary: "Ubuntu", "Arial", sans-serif;
+
+// navbar options
+$navbar-item-hover-background-color: transparent;
+$navbar-item-hover-color: $primary-invert;
+$navbar-item-color: $lightColor;
+
+@import "node_modules/bulma/bulma";
+
+// Mixins
+@mixin box-shadow($x, $y, $blur, $color)
+{
+  box-shadow: $x $y $blur $color;
+  -webkit-box-shadow: $x $y $blur $color;
+  -moz-box-shadow: $x $y $blur $color;
+}
+
+html
+{
+  height: 100%;
+}
+
+body
+{
+  font-weight: 400;
+  color: lighten($primary-invert, 50%);
+  min-height: 100%;
+}
+
+footer
+{
+  bottom: 0;
+}
+
+input[type=text], 
+input[type=email]
+{
+  @include box-shadow(2px, 2px, 4px, rgba(200, 200, 200, .5));
+}
+
+
+input[type=text]:focus,
+input[type=email]:focus
+{
+  border: 1px solid rgb(150, 150, 150);
+  @include box-shadow(2px, 2px, 4px, rgba(200, 200, 200, .5));
+}
+
+.checkbox
+{
+  padding: 5px 0 5px 0;
+}
+
+
+#logo-area
+{
+  height: 175px;
+  margin-bottom: 10px;
+
+  img 
+  {
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+    height: 175px;
+  }
+}
+
+$button-width: 150px;
+
+#fic-submit
+{
+  display:block;
+  margin-left: auto;
+  margin-right: auto;
+  font-weight: 500;
+  color: $lightColor;
+
+  &:hover
+  {
+    border: 1px solid $border-color;
+    background-color: $primary;
+    color: $primary-invert;
+  }
+}
+
+
+#input-options
+{
+  max-width: $button-width;
+
+  &:focus
+  {
+    border: 1px solid $logoColor;
+    @include box-shadow(0, 0, 7px, rgba($logoColor, .5));
+  }
+}
+
+#fic-opt-toggle
+{
+  background-color: white;
+  color: $lightColor;
+  border: none;
+  margin-left: auto;
+  margin-right: auto;
+
+  &:hover
+  {
+    border: 1px solid $border-color;
+  }
+
+  &:focus
+  {
+    border: 1px solid $border-color;
+    @include box-shadow(0, 0, 0, 0);
+  }
+}
+
+
+
+#email-address
+{
+  max-width: 300px;
+}
+
+#fic-opt
+{
+  margin-top: 20px;
+}
+
+.navbar-item
+{
+  font-size: 1.25em;
+  font-weight: 500;
+  text-align: center;
+  padding-top: 0;
+  padding-bottom: 0;
+
+  a 
+  {
+    color: $lightColor;
+    position: relative;
+    display: inline-block;
+    
+    &:after
+    {
+      content: "";
+      height: 7px;
+      width: 0;
+      background-color: rgba($logoColor, .35);
+      position: absolute;
+      bottom: -3px;
+      left: 0;
+      transition: $hoverAnimate;
+      visibility: hidden;
+    }
+  
+    &:hover
+    {
+      color: $primary-invert;
+      
+      &:after
+      {
+        visibility: visible;
+        width: 100%;
+      }
+    }
+  }
+}
+
+.navbar
+{
+  position: absolute;
+  width: 100%;
+  z-index: 100;
+}
