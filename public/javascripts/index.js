@@ -52,7 +52,21 @@ $(document).ready(function ()
         $(this).toggleClass("is-active");
     });
 
-    // Sockets
+    $("#fic-opt-button").click(function()
+    {
+        var arrow = $(".opt-arrow");
+        var ficOpt = $("#fic-opt");
+
+        if (arrow.hasClass("arrow-open"))
+            ficOpt.slideUp();
+        else
+            ficOpt.slideDown();
+
+        arrow.toggleClass("arrow-open");
+
+        
+    });
+    //************************************************************ Sockets *******************************************************************
     socket.on("critical", function(msg)
     {
         addOutput(msg, "critical");
@@ -190,24 +204,32 @@ function addOutput(msg, colorClass)
 function addPercent(pct)
 {
     pct = parseFloat(pct);
-    var current = parseFloat($(".progress-bar").attr("aria-valuenow"));
+    var current = parseFloat($(".progress").attr("value"));
     var after = pct + current;
 
     if (after > 100)
         after = 100;
-
+    
+    toggleProgress(true);
     setPercent(after);
 }
 
 function setPercent(pct)
 {
+    toggleProgress(true);
     if (pct > 100)
         pct = 100;
 
     if (pct < 0)
         pct = 0;
 
-    var pb = $(".progress-bar");
-    pb.attr("aria-valuenow", pct);
-    pb.css("width", pct + "%");
+    var pb = $(".progress");
+    pb.attr("value", pct);
+    //pb.css("width", pct + "%");
+}
+
+function toggleProgress(toggled)
+{
+    var pb = $(".progress");
+    pb.css("visibility", toggled ? "visible" : "hidden");
 }

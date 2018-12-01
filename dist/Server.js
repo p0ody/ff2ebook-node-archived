@@ -6,7 +6,8 @@ var logger = require("morgan");
 var cookieParser = require("cookie-parser");
 var bodyParser = require("body-parser");
 var http = require("http");
-var lessMiddleware = require("less-middleware");
+//let lessMiddleware = require("less-middleware");
+var sassMiddleware = require("node-sass-middleware");
 var DBHandler_1 = require("./DBHandler");
 var SocketHandler = require("./SocketHandler");
 var constValue = require("./constValue");
@@ -49,7 +50,8 @@ var Server = (function () {
         this.getApp().use(bodyParser.json());
         this.getApp().use(bodyParser.urlencoded({ extended: false }));
         this.getApp().use(cookieParser());
-        this.getApp().use(lessMiddleware(path.join(APPROOT.path, 'public')));
+        //this.getApp().use(lessMiddleware(path.join(APPROOT.path, 'less'), { dest: path.join(APPROOT.path, "public") }));
+        this.getApp().use(sassMiddleware({ src: path.join(APPROOT.path, "sass"), dest: path.join(APPROOT.path, "public"), debug: false }));
         this.getApp().use(express.static(path.join(APPROOT.path, 'public')));
     };
     Server.prototype.addRoutes = function () {

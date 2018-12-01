@@ -1,10 +1,10 @@
 @import "node_modules/bulma/sass/utilities/initial-variables";
 @import "node_modules/bulma/sass/utilities/functions";
-@import url('https://fonts.googleapis.com/css?family=Ubuntu:400,500');
+@import url('https://fonts.googleapis.com/css?family=Ubuntu:400,500,700');
 
 $primary: rgb(245, 245, 245);
 $primary-invert: findColorInvert($primary);
-$logoColor: rgb(157, 255, 31);
+$logoColor: rgb(200, 25, 225);
 $border-color: rgba(200, 200, 200, .7);
 $lightColor: lighten($primary-invert, 50%);
 $hoverAnimate: all 0.4s ease-in-out;
@@ -16,6 +16,10 @@ $navbar-item-hover-background-color: transparent;
 $navbar-item-hover-color: $primary-invert;
 $navbar-item-color: $lightColor;
 
+// Progress bar
+$progress-value-background-color: rgba($logoColor, .5);
+$progress-bar-background-color: rgba(255, 255, 255, 255);
+
 @import "node_modules/bulma/bulma";
 
 // Mixins
@@ -24,6 +28,15 @@ $navbar-item-color: $lightColor;
   box-shadow: $x $y $blur $color;
   -webkit-box-shadow: $x $y $blur $color;
   -moz-box-shadow: $x $y $blur $color;
+  -o-box-shadow: $x $y $blur $color;
+}
+
+@mixin transition($element, $duration, $effect)
+{
+  transition: $element $duration $effect;
+  -webkit-transition: $element $duration $effect;
+  -moz-transition: $element $duration $effect;
+  -o-transition: $element $duration $effect;
 }
 
 html
@@ -68,7 +81,7 @@ input[type=email]:focus
   height: 175px;
   margin-bottom: 10px;
 
-  img 
+  object 
   {
     display: block;
     margin-left: auto;
@@ -95,48 +108,9 @@ $button-width: 150px;
   }
 }
 
-
-#input-options
-{
-  max-width: $button-width;
-
-  &:focus
-  {
-    border: 1px solid $logoColor;
-    @include box-shadow(0, 0, 7px, rgba($logoColor, .5));
-  }
-}
-
-#fic-opt-toggle
-{
-  background-color: white;
-  color: $lightColor;
-  border: none;
-  margin-left: auto;
-  margin-right: auto;
-
-  &:hover
-  {
-    border: 1px solid $border-color;
-  }
-
-  &:focus
-  {
-    border: 1px solid $border-color;
-    @include box-shadow(0, 0, 0, 0);
-  }
-}
-
-
-
 #email-address
 {
   max-width: 300px;
-}
-
-#fic-opt
-{
-  margin-top: 20px;
 }
 
 .navbar-item
@@ -158,7 +132,7 @@ $button-width: 150px;
       content: "";
       height: 7px;
       width: 0;
-      background-color: rgba($logoColor, .35);
+      background-color: rgba($logoColor, .5);
       position: absolute;
       bottom: -3px;
       left: 0;
@@ -184,4 +158,106 @@ $button-width: 150px;
   position: absolute;
   width: 100%;
   z-index: 100;
+}
+
+progress
+{
+  //visibility: hidden;
+  height: 4px !important;
+}
+
+#input-send-div
+{
+  margin-top: -25px;
+}
+
+
+$optionsHeight: 20px;
+#fic-opt-button
+{
+  padding: 10px 0 10px 0;
+  display: block;
+  font-weight: 500;
+  font-size: $optionsHeight;
+  cursor: pointer;
+  margin: 20px 0 0 0;
+  text-align: center;
+  color: lighten($primary-invert, 50%);
+  @include transition(all, 1s, ease-in-out);
+
+  &:hover
+  {
+    color: $primary-invert;
+  }
+}
+
+.opt-arrow
+{
+  display: inline-block;
+  position: relative;
+  width: 32px;
+  height: 15px;
+  margin-left: 20px;
+  margin-right: 20px;
+
+  .arrow-left
+  {
+    position: absolute;
+    top: 5.5px;
+    left: 0;
+    height: $optionsHeight;
+    float: right;
+  
+    &:after
+    {
+      content:"";
+      background-color: $logoColor;
+      width: 20px;
+      height: 5px;
+      display: block;
+      float: right;
+      border-radius: 4px 5px 5px 4px;
+      @include transition(all, .4s, ease-in-out);
+    }
+  }
+  .arrow-right
+  {
+    position: absolute;
+    top: 5.5px;
+    left: 12px;
+    width: $optionsHeight;
+    height: 5px;
+    float: right;
+    
+    &:after
+    {
+      content:"";
+      background-color: $logoColor;
+      width: 20px;
+      height: 5px;
+      display: block;
+      float: right;
+      border-radius: 5px 4px 4px 5px;
+      @include transition(all, .4s, ease-in-out);
+    }
+  }
+}
+
+.arrow-open 
+{
+  .arrow-left:after 
+  {
+    transform-origin: center center;
+    transform: rotate(40deg);
+  }
+  .arrow-right:after 
+  {
+    transform-origin: center center;
+    transform: rotate(-40deg);
+  }
+}
+
+#fic-opt
+{
+  display: none;
 }

@@ -1,4 +1,4 @@
-@import url("https://fonts.googleapis.com/css?family=Ubuntu:400,500");
+@import url("https://fonts.googleapis.com/css?family=Ubuntu:400,500,700");
 /*! bulma.io v0.6.2 | MIT License | github.com/jgthms/bulma */
 @keyframes spinAround {
   from {
@@ -2919,13 +2919,13 @@ a.box:active {
   .progress:not(:last-child) {
     margin-bottom: 1.5rem; }
   .progress::-webkit-progress-bar {
-    background-color: #dbdbdb; }
+    background-color: white; }
   .progress::-webkit-progress-value {
-    background-color: #4a4a4a; }
+    background-color: rgba(200, 25, 225, 0.5); }
   .progress::-moz-progress-bar {
-    background-color: #4a4a4a; }
+    background-color: rgba(200, 25, 225, 0.5); }
   .progress::-ms-fill {
-    background-color: #4a4a4a;
+    background-color: rgba(200, 25, 225, 0.5);
     border: none; }
   .progress.is-white::-webkit-progress-value {
     background-color: white; }
@@ -6520,14 +6520,16 @@ input[type=text],
 input[type=email] {
   box-shadow: 2px 2px 4px rgba(200, 200, 200, 0.5);
   -webkit-box-shadow: 2px 2px 4px rgba(200, 200, 200, 0.5);
-  -moz-box-shadow: 2px 2px 4px rgba(200, 200, 200, 0.5); }
+  -moz-box-shadow: 2px 2px 4px rgba(200, 200, 200, 0.5);
+  -o-box-shadow: 2px 2px 4px rgba(200, 200, 200, 0.5); }
 
 input[type=text]:focus,
 input[type=email]:focus {
   border: 1px solid #969696;
   box-shadow: 2px 2px 4px rgba(200, 200, 200, 0.5);
   -webkit-box-shadow: 2px 2px 4px rgba(200, 200, 200, 0.5);
-  -moz-box-shadow: 2px 2px 4px rgba(200, 200, 200, 0.5); }
+  -moz-box-shadow: 2px 2px 4px rgba(200, 200, 200, 0.5);
+  -o-box-shadow: 2px 2px 4px rgba(200, 200, 200, 0.5); }
 
 .checkbox {
   padding: 5px 0 5px 0; }
@@ -6535,7 +6537,7 @@ input[type=email]:focus {
 #logo-area {
   height: 175px;
   margin-bottom: 10px; }
-  #logo-area img {
+  #logo-area object {
     display: block;
     margin-left: auto;
     margin-right: auto;
@@ -6552,33 +6554,8 @@ input[type=email]:focus {
     background-color: whitesmoke;
     color: rgba(0, 0, 0, 0.7); }
 
-#input-options {
-  max-width: 150px; }
-  #input-options:focus {
-    border: 1px solid #9dff1f;
-    box-shadow: 0 0 7px rgba(157, 255, 31, 0.5);
-    -webkit-box-shadow: 0 0 7px rgba(157, 255, 31, 0.5);
-    -moz-box-shadow: 0 0 7px rgba(157, 255, 31, 0.5); }
-
-#fic-opt-toggle {
-  background-color: white;
-  color: rgba(128, 128, 128, 0.7);
-  border: none;
-  margin-left: auto;
-  margin-right: auto; }
-  #fic-opt-toggle:hover {
-    border: 1px solid rgba(200, 200, 200, 0.7); }
-  #fic-opt-toggle:focus {
-    border: 1px solid rgba(200, 200, 200, 0.7);
-    box-shadow: 0 0 0 0;
-    -webkit-box-shadow: 0 0 0 0;
-    -moz-box-shadow: 0 0 0 0; }
-
 #email-address {
   max-width: 300px; }
-
-#fic-opt {
-  margin-top: 20px; }
 
 .navbar-item {
   font-size: 1.25em;
@@ -6594,7 +6571,7 @@ input[type=email]:focus {
       content: "";
       height: 7px;
       width: 0;
-      background-color: rgba(157, 255, 31, 0.35);
+      background-color: rgba(200, 25, 225, 0.5);
       position: absolute;
       bottom: -3px;
       left: 0;
@@ -6610,3 +6587,81 @@ input[type=email]:focus {
   position: absolute;
   width: 100%;
   z-index: 100; }
+
+progress {
+  height: 4px !important; }
+
+#input-send-div {
+  margin-top: -25px; }
+
+#fic-opt-button {
+  padding: 10px 0 10px 0;
+  display: block;
+  font-weight: 500;
+  font-size: 20px;
+  cursor: pointer;
+  margin: 20px 0 0 0;
+  text-align: center;
+  color: rgba(128, 128, 128, 0.7);
+  transition: all 1s ease-in-out;
+  -webkit-transition: all 1s ease-in-out;
+  -moz-transition: all 1s ease-in-out;
+  -o-transition: all 1s ease-in-out; }
+  #fic-opt-button:hover {
+    color: rgba(0, 0, 0, 0.7); }
+
+.opt-arrow {
+  display: inline-block;
+  position: relative;
+  width: 32px;
+  height: 15px;
+  margin-left: 20px;
+  margin-right: 20px; }
+  .opt-arrow .arrow-left {
+    position: absolute;
+    top: 5.5px;
+    left: 0;
+    height: 20px;
+    float: right; }
+    .opt-arrow .arrow-left:after {
+      content: "";
+      background-color: #c819e1;
+      width: 20px;
+      height: 5px;
+      display: block;
+      float: right;
+      border-radius: 4px 5px 5px 4px;
+      transition: all 0.4s ease-in-out;
+      -webkit-transition: all 0.4s ease-in-out;
+      -moz-transition: all 0.4s ease-in-out;
+      -o-transition: all 0.4s ease-in-out; }
+  .opt-arrow .arrow-right {
+    position: absolute;
+    top: 5.5px;
+    left: 12px;
+    width: 20px;
+    height: 5px;
+    float: right; }
+    .opt-arrow .arrow-right:after {
+      content: "";
+      background-color: #c819e1;
+      width: 20px;
+      height: 5px;
+      display: block;
+      float: right;
+      border-radius: 5px 4px 4px 5px;
+      transition: all 0.4s ease-in-out;
+      -webkit-transition: all 0.4s ease-in-out;
+      -moz-transition: all 0.4s ease-in-out;
+      -o-transition: all 0.4s ease-in-out; }
+
+.arrow-open .arrow-left:after {
+  transform-origin: center center;
+  transform: rotate(40deg); }
+
+.arrow-open .arrow-right:after {
+  transform-origin: center center;
+  transform: rotate(-40deg); }
+
+#fic-opt {
+  display: none; }

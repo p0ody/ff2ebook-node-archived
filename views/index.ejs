@@ -17,29 +17,28 @@
     <section class="section">
         <div class="container">
             <div id="logo-area">
-                <img src="/images/ff2ebook-logo.svg">
+                <object type="image/svg+xml" data="/images/ff2ebook-logo.svg">
+                    <img src="/images/ff2ebook-logo.png">
+                </object>
             </div>
             <form id="input-form">
                 <div class="columns is-centered is-gapless">
                     <div class="column is-half">
-                        
                         <div class="field">
                             <div class="control">
                                 <input class="input is-medium" id="input-text" type="text" placeholder="URL">
+                                <progress class="progress" value="0" max="100"></progress>
                             </div>
-                        </div>
-                        <div>
-                            <progress class="progress fic-progress" value="15" max="100">15%</progress>
                         </div>
                     </div>
                 </div>
 
-                <div class="columns is-mobile is-centered">
+                <div class="columns is-mobile is-centered" id="input-send-div">
                     <div class="column is-one-quarter-desktop is-half-mobile">
                         <div class="select is-pulled-right is-medium">
-                            <select class="is-medium" id="input-options">
-                                <option>ePub</option>
-                                <option>Mobi</option>
+                            <select class="is-medium" id="file-type">
+                                <option selected value="epub">ePub</option>
+                                <option value="mobi">MOBI</option>
                             </select>
                         </div>
                     </div>
@@ -54,27 +53,46 @@
             </form>
 
             <!-- Options -->
-            <div class="columns is-centered is-gapless" id="fic-opt">
+            <div class="columns is-centered is-gapless">
                 <div class="column is-half-desktop">
-                    <div>
-                        <label class="checkbox">
-                            <input type="checkbox" id="force-update"> Force update.
-                        </label>
+                    
+                    <div id="fic-opt-button">
+                        <div class="opt-arrow">
+                            <span class="arrow-left"></span>
+                            <span class="arrow-right"></span>
+                        </div>
+                        OPTIONS
+                        <div class="opt-arrow">
+                            <span class="arrow-left"></span>
+                            <span class="arrow-right"></span>
+                        </div>
                     </div>
-
-                    <div>
-                        <label class="checkbox">
-                            <input type="checkbox" id="auto-dl"> Automatic download.
-                        </label>
+                    
+                    <div id="fic-opt">
+                        <div>
+                            <label class="checkbox">
+                                <input type="checkbox" id="force-update"> Force update.
+                            </label>
+                        </div>
+        
+                        <div>
+                            <label class="checkbox">
+                                <input type="checkbox" id="auto-dl"> Automatic download.
+                            </label>
+                        </div>
+        
+                        <div>
+                            <label class="checkbox">
+                                <input type="checkbox" id="send-email"> Send to mailbox.
+                            </label>
+                        </div>
+                        <input class="input" type="email" placeholder="Email Address" id="email-address">
                     </div>
-
-                    <div>
-                        <label class="checkbox">
-                            <input type="checkbox" id="send-email"> Send to mailbox.
-                        </label>
-                    </div>
-                    <input class="input" type="email" placeholder="Email Address" id="email-address">
                 </div>
+            </div>
+            <div class="column is-half-desktop">
+                <div>
+
             </div>
         </div>
 
