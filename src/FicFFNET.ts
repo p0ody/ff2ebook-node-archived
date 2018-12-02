@@ -8,7 +8,7 @@ import * as request from "request";
 
 export class FicFFNET extends BaseFic
 {
-    gatherFicInfos(completedCallback: AsyncResultCallback<any, any>) : void
+    gatherFicInfos(completedCallback: Async.AsyncResultCallback<any, any>) : void
     {
         var self = this;
         Async.waterfall([
@@ -29,6 +29,7 @@ export class FicFFNET extends BaseFic
                 if (self.isValidFic(body)) 
                 {
                     var infos = self.findFicInfos(body);
+                    
                     callback(null)
                 }
                 else
@@ -37,14 +38,14 @@ export class FicFFNET extends BaseFic
         ], completedCallback);
     }
 
-    gatherChaptersInfos(completedCallback: AsyncResultCallback<any, any>) : void
+    gatherChaptersInfos(completedCallback: Async.AsyncResultCallback<any, any>) : void
     {
         var self = this;
         Async.times(this.getChapterCount() + 1, function(i:number, next: any)
         {
             if (i > 0)
             {
-                Async.retry({ times: 3, interval: 0 }, function (callback: AsyncResultCallback<any, any>)
+                Async.retry({ times: 3, interval: 0 }, function (callback: Async.AsyncResultCallback<any, any>)
                 {
                     Logging.log("Getting chapter #"+ i);
                     self.getPageSourceCode(i, function ()

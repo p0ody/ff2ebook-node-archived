@@ -152,54 +152,58 @@ var Fic = (function () {
         if (self.getForceUpdate() === true)
             return self.getHandler().gatherChaptersInfos(self.gatherChaptersInfosCallback.bind(self)); // Keep going in file creation
         // Check if fic is in DB
-        var db = DBHandler_1.DBHandler.getDB();
-        db.query("SELECT * FROM `fic_archive` WHERE `id`=?;", [self.getHandler().getFicId()], function (err, result) {
-            if (err) {
-                Logging.log(err);
-                return self._event.emit("critical", "Error while accessing database, please try again later");
-            }
-            if ((result.length > 0 && result[0].updated >= self.getHandler().getUpdatedDate())) {
-                var epub = process.env.ARCHIVE_DIR + "/" + result[0].filename;
-                var mobi = epub.substr(0, epub.length - 4) + "mobi";
-                FileMgr.fileExist(epub, function (exist) {
-                    if (exist) {
-                        if (self.getFileType() == Enums.FileType.MOBI) {
-                            FileMgr.fileExist(mobi, function (exist) {
-                                if (exist) {
-                                    self.setFilePath(mobi);
-                                    return self.sendFileReady(); // Send fileReady to client for MOBI file if it already exists
-                                }
-                                else {
-                                    self._event.emit("mobiStart");
-                                    self._event.emit("status", "Converting to mobi...");
-                                    FileMgr.createMobi(epub, function (err, file) {
-                                        if (err)
-                                            return self._event.emit("critical", "An error as occured while converting to mobi.");
-                                        self.setFilePath(file);
-                                        return self.sendFileReady(); // Send fileReady to client for MOBI file after creating it
-                                    });
-                                }
-                            });
+        if (DBHandler_1.DBHandler.isValid()) {
+            var db_1 = DBHandler_1.DBHandler.getDB();
+            db_1.query("SELECT * FROM `fic_archive` WHERE `id`=?;", [self.getHandler().getFicId()], function (err, result) {
+                if (err) {
+                    Logging.log(err);
+                    return self._event.emit("critical", "Error while accessing database, please try again later");
+                }
+                if ((result.length > 0 && result[0].updated >= self.getHandler().getUpdatedDate())) {
+                    var epub = process.env.ARCHIVE_DIR + "/" + result[0].filename;
+                    var mobi = epub.substr(0, epub.length - 4) + "mobi";
+                    FileMgr.fileExist(epub, function (exist) {
+                        if (exist) {
+                            if (self.getFileType() == Enums.FileType.MOBI) {
+                                FileMgr.fileExist(mobi, function (exist) {
+                                    if (exist) {
+                                        self.setFilePath(mobi);
+                                        return self.sendFileReady(); // Send fileReady to client for MOBI file if it already exists
+                                    }
+                                    else {
+                                        self._event.emit("mobiStart");
+                                        self._event.emit("status", "Converting to mobi...");
+                                        FileMgr.createMobi(epub, function (err, file) {
+                                            if (err)
+                                                return self._event.emit("critical", "An error as occured while converting to mobi.");
+                                            self.setFilePath(file);
+                                            return self.sendFileReady(); // Send fileReady to client for MOBI file after creating it
+                                        });
+                                    }
+                                });
+                            }
+                            else {
+                                Logging.log("Epub already exist and is up to date.");
+                                self.setFilePath(epub);
+                                return self.sendFileReady(); // Send fileReady to client for EPUB file that already exists
+                            }
                         }
                         else {
-                            Logging.log("Epub already exist and is up to date.");
-                            self.setFilePath(epub);
-                            return self.sendFileReady(); // Send fileReady to client for EPUB file that already exists
+                            self.getHandler().gatherChaptersInfos(self.gatherChaptersInfosCallback.bind(self)); // Keep going in file creation
+                            db_1.query("DELETE FROM `fic_archive` WHERE `id`=?", [self.getHandler().getFicId()], function (err) {
+                                if (err)
+                                    Logging.trace(err);
+                            });
                         }
-                    }
-                    else {
-                        self.getHandler().gatherChaptersInfos(self.gatherChaptersInfosCallback.bind(self)); // Keep going in file creation
-                        db.query("DELETE FROM `fic_archive` WHERE `id`=?", [self.getHandler().getFicId()], function (err) {
-                            if (err)
-                                Logging.trace(err);
-                        });
-                    }
-                });
-            }
-            else {
-                self.getHandler().gatherChaptersInfos(self.gatherChaptersInfosCallback.bind(self)); // Keep going in file creation
-            }
-        });
+                    });
+                }
+                else {
+                    self.getHandler().gatherChaptersInfos(self.gatherChaptersInfosCallback.bind(self)); // Keep going in file creation
+                }
+            });
+        }
+        else
+            self.getHandler().gatherChaptersInfos(self.gatherChaptersInfosCallback.bind(self)); // Keep going in file creation if mysql connection isnt valid
     };
     ;
     Fic.prototype.gatherChaptersInfosCallback = function (err) {
@@ -212,31 +216,32 @@ var Fic = (function () {
             if (err)
                 return self._event.emit("critical", err);
             var path = require("path");
-            var db = DBHandler_1.DBHandler.getDB();
-            db.query("REPLACE INTO `fic_archive` (`site`,`id`,`title`,`author`,`authorID`,`updated`,`filename`) VALUES (?,?,?,?,?,?,?);", [self.getSource(), self.getHandler().getFicId(), self.getHandler().getTitle(), self.getHandler().getAuthor(), self.getHandler().getAuthorId(), self.getHandler().getUpdatedDate(), path.basename(filepath)], function (err) {
-                if (err) {
-                    Logging.log(err);
-                    return self._event.emit("critical", "Error while accessing database, please try again later");
-                }
-                else {
-                    // Start mobi convertion if filetype is mobi
-                    self._event.emit("mobiStart");
-                    self._event.emit("status", "Epub ready.");
-                    if (self.getFileType() == Enums.FileType.MOBI) {
-                        self._event.emit("status", "Converting to Mobi...");
-                        FileMgr.createMobi(filepath, function (err, mobi) {
-                            if (err)
-                                return self._event.emit("critical", "Error while converting to Mobi.");
-                            self.setFilePath(mobi);
-                            return self.sendFileReady();
-                        });
+            // Add fic infos to database only if mysql connection is valid
+            if (DBHandler_1.DBHandler.isValid()) {
+                var db = DBHandler_1.DBHandler.getDB();
+                db.query("REPLACE INTO `fic_archive` (`site`,`id`,`title`,`author`,`authorID`,`updated`,`filename`) VALUES (?,?,?,?,?,?,?);", [self.getSource(), self.getHandler().getFicId(), self.getHandler().getTitle(), self.getHandler().getAuthor(), self.getHandler().getAuthorId(), self.getHandler().getUpdatedDate(), path.basename(filepath)], function (err) {
+                    if (err) {
+                        Logging.log(err);
+                        return self._event.emit("critical", "Error while accessing database, please try again later");
                     }
-                    else {
-                        self.setFilePath(filepath);
-                        return self.sendFileReady(); // Tell the client that the EPUB is ready
-                    }
-                }
-            });
+                });
+            }
+            // Start mobi convertion if filetype is mobi
+            self._event.emit("mobiStart");
+            self._event.emit("status", "Epub ready.");
+            if (self.getFileType() == Enums.FileType.MOBI) {
+                self._event.emit("status", "Converting to Mobi...");
+                FileMgr.createMobi(filepath, function (err, mobi) {
+                    if (err)
+                        return self._event.emit("critical", "Error while converting to Mobi.");
+                    self.setFilePath(mobi);
+                    return self.sendFileReady();
+                });
+            }
+            else {
+                self.setFilePath(filepath);
+                return self.sendFileReady(); // Tell the client that the EPUB is ready
+            }
         });
     };
     return Fic;

@@ -6625,7 +6625,7 @@ progress {
     float: right; }
     .opt-arrow .arrow-left:after {
       content: "";
-      background-color: #c819e1;
+      background-color: #df71ef;
       width: 20px;
       height: 5px;
       display: block;
@@ -6644,7 +6644,7 @@ progress {
     float: right; }
     .opt-arrow .arrow-right:after {
       content: "";
-      background-color: #c819e1;
+      background-color: #df71ef;
       width: 20px;
       height: 5px;
       display: block;
