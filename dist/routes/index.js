@@ -3,16 +3,21 @@ Object.defineProperty(exports, "__esModule", { value: true });
 var express = require("express");
 var router = express.Router();
 router.get('/', function (req, res, next) {
-    var autoDownload = (req.cookies.autoDL == "true") ? "checked=\"\"" : "";
-    var sendEmail = (req.cookies.sendEmail == "true") ? "checked=\"\"" : "";
-    var epub, mobi;
-    if (req.cookies.fileType == "EPUB") {
-        epub = "selected=\"selected\"";
-        mobi = "";
-    }
-    else {
-        epub = "";
-        mobi = "selected=\"selected\"";
+    var epub, mobi, autoDownload, sendEmail = "";
+    if (req.cookies.autoDL !== undefined)
+        autoDownload = (req.cookies.autoDL.toUpperCase() == "TRUE") ? "checked" : "";
+    if (req.cookies.sendEmail !== undefined)
+        sendEmail = (req.cookies.sendEmail.toUpperCase() == "TRUE") ? "checked" : "";
+    var fileType = req.cookies.fileType;
+    if (fileType !== undefined) {
+        switch (fileType.toUpperCase()) {
+            case "EPUB":
+                epub = "selected";
+                break;
+            case "MOBI":
+                mobi = "selected";
+                break;
+        }
     }
     res.render('index', {
         autoDL: autoDownload,

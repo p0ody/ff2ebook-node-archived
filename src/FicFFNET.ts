@@ -8,7 +8,7 @@ import * as request from "request";
 
 export class FicFFNET extends BaseFic
 {
-    gatherFicInfos(completedCallback: Async.AsyncResultCallback<any, any>) : void
+    gatherFicInfos(completedCallback: typedef.Callback) : void
     {
         var self = this;
         Async.waterfall([
@@ -38,35 +38,26 @@ export class FicFFNET extends BaseFic
         ], completedCallback);
     }
 
-    gatherChaptersInfos(completedCallback: Async.AsyncResultCallback<any, any>) : void
+    gatherChaptersInfos(completedCallback: typedef.Callback) : void
     {
         var self = this;
         Async.times(this.getChapterCount() + 1, function(i:number, next: any)
         {
             if (i > 0)
             {
-                Async.retry({ times: 3, interval: 0 }, function (callback: Async.AsyncResultCallback<any, any>)
+                self.getPageSourceCode(i, function (err: any)
                 {
-                    Logging.log("Getting chapter #"+ i);
-                    self.getPageSourceCode(i, function ()
-                    {
-                        var chapter = self.findChapterInfos(i);
+                    if (err)
+                        return next(err);
 
-                        if (!chapter)
-                        {
-                            self._event.emit("warning", "Error while fetching chapter #" + i + "... Retrying.");
-                            callback("Error while fetching chapter #" + i)
-                        }
-                        else
-                            callback(null, chapter);
-                    });
-                }, function (err: any, chapter: Chapter)
-                {
-                    if (!err)
-                        self.getChapters().push(chapter);
+                    var chapter: Chapter = self.findChapterInfos(i);
 
+                    if (!chapter.isValid())
+                        return next("Missing data for chapter #"+ i);
+
+                    self.getChapters().push(chapter);
                     self._event.emit("chapReady", self.getChapterCount());
-                    next(err);
+                    next();
                 });
             }
             else
@@ -74,22 +65,35 @@ export class FicFFNET extends BaseFic
         }, completedCallback);
     };
 
-    getPageSourceCode(chapNum: number, callback: typedef.Callback) : void
+    getPageSourceCode(chapNum: number, completedCallback: typedef.Callback) : void
     {
         var self = this;
-
-        request(this.getURL(chapNum), function (err: any, res: any, body: string)
+        let retry = 1;
+        Async.retry({ times: 3, interval: 0 }, 
+        function (callback: typedef.Callback) // Task
         {
-            if (!err && res.statusCode == 200)
+            retry++;
+            request(self.getURL(chapNum), function (err: any, res: any, body: string)
             {
-                self.setPageSource(chapNum, body);
-                callback(null, body);
-            }
-            else
-            {
-                self.setPageSource(chapNum, "");
-                callback("Couldn't find page source for Infos page.");
-            }
+                let page = (chapNum === 0) ? "fic infos page." : "chapter #"+ chapNum;
+                Logging.log("Getting source for "+ page);
+                if (!err && res.statusCode == 200)
+                {
+                    self.setPageSource(chapNum, body);
+                    callback(null, body);
+                }
+                else
+                {
+                    self.setPageSource(chapNum, "");
+
+                    self._event.emit("warning", "Error while fetching "+ page +"... Retrying "+ retry +"/3.");
+                    callback("Couldn't find page source for "+ page +".");
+                }
+            });
+
+        }, function (err: any, body: string) // callback when succeeded or after last try.
+        {
+            completedCallback(err, body)
         });
     };
 

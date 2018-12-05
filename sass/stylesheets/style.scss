@@ -180,7 +180,7 @@ $optionsHeight: 20px;
   font-weight: 500;
   font-size: $optionsHeight;
   cursor: pointer;
-  margin: 20px 0 0 0;
+  margin: 0 0 0 0;
   text-align: center;
   color: lighten($primary-invert, 50%);
   @include transition(all, 1s, ease-in-out);
@@ -260,4 +260,26 @@ $optionsHeight: 20px;
 #fic-opt
 {
   display: none;
+}
+
+#status-text
+{
+  padding-top: 15px;
+  font-weight: 400;
+  font-size: 25px;
+  color: lighten($primary-invert, 50%);
+  text-align: center;
+
+  a
+  {
+    color: lighten($primary-invert, 30%);
+    text-decoration: underline;
+    text-decoration-color: rgba($logoColor, .5);
+    font-weight: 500;
+
+    &:hover
+    {
+      color: $primary-invert;
+    }
+  }
 }

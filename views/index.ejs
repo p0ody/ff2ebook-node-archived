@@ -37,8 +37,8 @@
                     <div class="column is-one-quarter-desktop is-half-mobile">
                         <div class="select is-pulled-right is-medium">
                             <select class="is-medium" id="file-type">
-                                <option selected value="epub">ePub</option>
-                                <option value="mobi">MOBI</option>
+                                <option value="EPUB" <%= typeEpub %>>ePub</option>
+                                <option value="MOBI" <%= typeMobi %>>Mobi</option>
                             </select>
                         </div>
                     </div>
@@ -51,6 +51,12 @@
                     </div>
                 </div>
             </form>
+
+            <div class="columns is-centered is-gapless">
+                <div class="column is-half-desktop">
+                    <div id="status-text">Ready.</div>
+                </div>
+            </div>
 
             <!-- Options -->
             <div class="columns is-centered is-gapless">
@@ -77,16 +83,16 @@
         
                         <div>
                             <label class="checkbox">
-                                <input type="checkbox" id="auto-dl" checked> Automatic download.
+                                <input type="checkbox" id="auto-dl" <%= autoDL %>> Automatic download.
                             </label>
                         </div>
         
                         <div>
                             <label class="checkbox">
-                                <input type="checkbox" id="send-email"> Send to mailbox.
+                                <input type="checkbox" id="send-email" <%= sendEmail %>> Send to mailbox.
                             </label>
                         </div>
-                        <input class="input" type="email" placeholder="Email Address" id="email-address">
+                        <input class="input" type="email" placeholder="Email Address" id="email-address" value="<%= emailAddress %>">
                     </div>
                 </div>
             </div>

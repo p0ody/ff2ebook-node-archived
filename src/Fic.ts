@@ -245,7 +245,7 @@ export class Fic
                 }
             });
         }
-        else
+        else // No database connection
             self.getHandler().gatherChaptersInfos(self.gatherChaptersInfosCallback.bind(self)); // Keep going in file creation if mysql connection isnt valid
     };
 

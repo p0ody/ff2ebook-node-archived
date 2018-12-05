@@ -15,8 +15,8 @@ export function createMobi(mobipath: string, callback: (a?: any, b?:any) => void
 {
     //let self = this;
     let exec = require('child_process').execFile;
-    let epub = path.basename(path);
-    let mobi = process.env.ARCHIVE_DIR +"/"+ path.basename(path, ".epub") + ".mobi";
+    let epub = path.basename(mobipath);
+    let mobi = process.env.ARCHIVE_DIR +"/"+ path.basename(mobipath, ".epub") + ".mobi";
 
     let next = function()
     {

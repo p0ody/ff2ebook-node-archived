@@ -11,8 +11,8 @@ exports.createEpub = createEpub;
 function createMobi(mobipath, callback) {
     //let self = this;
     var exec = require('child_process').execFile;
-    var epub = path.basename(path);
-    var mobi = process.env.ARCHIVE_DIR + "/" + path.basename(path, ".epub") + ".mobi";
+    var epub = path.basename(mobipath);
+    var mobi = process.env.ARCHIVE_DIR + "/" + path.basename(mobipath, ".epub") + ".mobi";
     var next = function () {
         exec(__dirname + "/../bin/kindlegen", [epub], { cwd: "./archive" }, function (err, stdout) {
             fs.stat(mobi, function (err, stats) {

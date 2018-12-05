@@ -14,9 +14,6 @@ var Fic = (function () {
         this._sendEmail = false;
         var self = this;
         this._event = event;
-        self._event.on("warning", function (msg) {
-            self._event.emit("warning", msg);
-        });
     }
     // Setters
     Fic.prototype.setFicId = function (id) { this._ficId = id; };

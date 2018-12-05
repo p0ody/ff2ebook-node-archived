@@ -6600,7 +6600,7 @@ progress {
   font-weight: 500;
   font-size: 20px;
   cursor: pointer;
-  margin: 20px 0 0 0;
+  margin: 0 0 0 0;
   text-align: center;
   color: rgba(128, 128, 128, 0.7);
   transition: all 1s ease-in-out;
@@ -6665,3 +6665,17 @@ progress {
 
 #fic-opt {
   display: none; }
+
+#status-text {
+  padding-top: 15px;
+  font-weight: 400;
+  font-size: 25px;
+  color: rgba(128, 128, 128, 0.7);
+  text-align: center; }
+  #status-text a {
+    color: rgba(77, 77, 77, 0.7);
+    text-decoration: underline;
+    text-decoration-color: rgba(200, 25, 225, 0.5);
+    font-weight: 500; }
+    #status-text a:hover {
+      color: rgba(0, 0, 0, 0.7); }

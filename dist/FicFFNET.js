@@ -46,12 +46,14 @@ var FicFFNET = (function (_super) {
         var self = this;
         Async.times(this.getChapterCount() + 1, function (i, next) {
             if (i > 0) {
+                var retry_1 = 0;
                 Async.retry({ times: 3, interval: 0 }, function (callback) {
+                    retry_1++;
                     Logging.log("Getting chapter #" + i);
                     self.getPageSourceCode(i, function () {
                         var chapter = self.findChapterInfos(i);
-                        if (!chapter) {
-                            self._event.emit("warning", "Error while fetching chapter #" + i + "... Retrying.");
+                        if (!chapter.isValid()) {
+                            self._event.emit("warning", "Error while fetching chapter #" + i + "... Retrying " + retry_1 + "/3.");
                             callback("Error while fetching chapter #" + i);
                         }
                         else

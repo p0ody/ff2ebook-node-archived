@@ -16,6 +16,8 @@ $(document).ready(function ()
         if ($("#input-text").val().length <= 0)
             return;
 
+        updateStatusText("Looking up fanfiction...");
+
         socket.emit("convert-start",
             {
                 url: $("#input-text").val(),
@@ -93,7 +95,7 @@ $(document).ready(function ()
     {
         setPercent(100);
         enableInputs(true);
-        updateStatusText("<a id=\"download-link\" href=\"/download/"+ data.source +"/"+ data.id +"/"+ data.fileType +"\">Download!</a>");
+        updateStatusText("<a id=\"download-link\" href=\"/download/"+ data.source +"/"+ data.id +"/"+ data.fileType +"\">Download ready.</a>");
         if ($("#auto-dl").prop("checked"))
             $("#download-link")[0].click();
     });
@@ -114,6 +116,7 @@ $(document).ready(function ()
     socket.on("ficInfosReady", function()
     {
         addPercent(PCT_FIC_INFOS);
+        updateStatusText("Fanfiction data found...")
     });
 
     socket.on("epubStart", function()
