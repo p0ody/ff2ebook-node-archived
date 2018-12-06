@@ -103,9 +103,9 @@ export class Fic
     {
         var self = this;
         self._event.emit("fileReady", {
-            source: this.getSource(),
+            source: Utils.sourceToShortString(this.getSource()),
             id: this.getHandler().getFicId(),
-            fileType: this.getFileType()
+            fileType: Utils.fileTypeToString(this.getFileType())
         });
         if (!self.getSendEmail() || self.getEmailAddress().length <= 0)
             return;
@@ -272,7 +272,7 @@ export class Fic
             {
                 let db = DBHandler.getDB();
                 db.query("REPLACE INTO `fic_archive` (`site`,`id`,`title`,`author`,`authorID`,`updated`,`filename`) VALUES (?,?,?,?,?,?,?);",
-                [self.getSource(), self.getHandler().getFicId(), self.getHandler().getTitle(), self.getHandler().getAuthor(), self.getHandler().getAuthorId(), self.getHandler().getUpdatedDate(), path.basename(filepath)],
+                [Utils.sourceToShortString(self.getSource()), self.getHandler().getFicId(), self.getHandler().getTitle(), self.getHandler().getAuthor(), self.getHandler().getAuthorId(), self.getHandler().getUpdatedDate(), path.basename(filepath)],
                 function (err: any)
                 {
                     if (err)

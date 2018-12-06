@@ -283,3 +283,8 @@ $optionsHeight: 20px;
     }
   }
 }
+
+#send-search
+{
+  @extend #fic-submit;
+}

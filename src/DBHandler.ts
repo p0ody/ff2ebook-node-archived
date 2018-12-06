@@ -26,7 +26,7 @@ export namespace DBHandler
         // Testing if a connection is possible
         db.getConnection(function(err: Mysql.IError, conn: Mysql.IConnection)
         {
-            if (err !== undefined)
+            if (err)
             {
                 Logging.alwaysLog("Error connecting to database: "+ err.code);
                 Logging.alwaysLog("App will now ignore DB calls");

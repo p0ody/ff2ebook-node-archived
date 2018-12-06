@@ -1,5 +1,6 @@
 import * as Enums from "./Enums";
 import * as Logging from "./Logging";
+let _ = require('lodash');
 
 
 export function genFicUrl(source: Enums.Sources, id: number, linkText: string) {
@@ -37,10 +38,14 @@ export function findSource(url: string): Enums.Sources
     return Enums.Sources.INVALID;
 }
 
-export function isValidSource(source: number): boolean 
+export function isValidSource(source: number | string): boolean 
 {
-    return (source > Enums.Sources.INVALID && source < Enums.Sources.SOURCES_MAX)
+    if (typeof source === "number")
+        return (source > Enums.Sources.INVALID && source < Enums.Sources.SOURCES_MAX)
+
+    return sourceFromString(<string>source) != Enums.Sources.INVALID;
 }
+
 
 export function sourceToShortString(source: Enums.Sources): string 
 {
@@ -145,6 +150,11 @@ export function fileTypeToString(type: Enums.FileType): string
     }
 
 };
+
+export function isValidFileTypeString(type: string)
+{
+    return fileTypeFromString(type) !== Enums.FileType.INVALID;
+}
 
 export function stringReplaceWithArray(str: string, find: any[], replace: any[]) : string
 {

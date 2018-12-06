@@ -1,6 +1,7 @@
 import * as express from "express";
 import * as Logging from "../Logging";
 import * as fm from "../FileMgr";
+import * as Utils from "../Utils";
 import { DBHandler }  from "../DBHandler";
 
 let router = express.Router();
@@ -22,12 +23,18 @@ router.get('/:source/:id/:type', function (req, res, next)
         req.params.type = "epub";
 
 
-    if (!_.isString(req.params.source) || !_.isNumber(parseInt(req.params.id)) || !_.isString(req.params.type))
+    if (typeof req.params.source !== "string" || typeof _.toNumber(req.params.id) !== "number" || typeof req.params.type !== "string")
         return res.send("Invalid URL");
+
+    if (!Utils.isValidSource(req.params.source))
+        return res.send("Invalid source");
+
+    if (!Utils.isValidFileTypeString(req.params.type))
+        return res.send("Invalid filetype");
 
     req.params.type = req.params.type.toLocaleLowerCase();
 
-    DBHandler.getDB().query("SELECT * FROM `fic_archive` WHERE `id`=?;", [req.params.id], function (err: any, result: any)
+    DBHandler.getDB().query("SELECT * FROM `fic_archive` WHERE `id`=? AND `site`=?;", [req.params.id, req.params.source], function (err: any, result: any)
     {
         if (err)
             return res.send("Error while accessing the database, please try again later.");
@@ -35,8 +42,9 @@ router.get('/:source/:id/:type', function (req, res, next)
         {
             if (result.length > 0)
             {
-                var filepath = process.env.ARCHIVE_DIR + "/" + req.params.source + "_" + req.params.id + "_" + result[0].updated + "." + req.params.type;
-                var filename = result[0].title + "_" + result[0].author + "." + req.params.type;
+                let filename = result[0].site + "_" + result[0].id + "_" + result[0].updated + "." + req.params.type;
+                let filepath = process.env.ARCHIVE_DIR + "/"+ filename;
+                
 
                 fm.fileExist(filepath, function (exist)
                 {
