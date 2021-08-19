@@ -5,9 +5,8 @@ import * as Search from "../Search";
 
 let router = express.Router();
 
-router.param(["search", "page"], function ()
-{
-});
+router.param("search", function () {});
+router.param("page", function () {});
 
 
 router.get('/', function (req, res)
@@ -32,7 +31,7 @@ router.get('/:search', function (req, res)
 
 router.get('/:search/:page', function (req, res)
 {
-    Search.searchFor(req.params.search, req.params.page, function(err, data)
+    Search.searchFor(req.params.search, <unknown>req.params.page as number, function(err, data)
     {
         var results = 0;
         if (err)

@@ -97,8 +97,8 @@ export abstract class BaseFic
         this.setStatus(this.findStatus(body));
     };
 
-    abstract gatherFicInfos(completedCallback: AsyncResultCallback<any, any>) : void;
-    abstract gatherChaptersInfos(completedCallback: AsyncResultCallback<any, any>) : void;
+    abstract gatherFicInfos(completedCallback: async.AsyncResultCallback<any, Error>) : void;
+    abstract gatherChaptersInfos(completedCallback: async.AsyncResultCallback<any, Error>) : void;
     abstract getPageSourceCode(chapNum: number, callback: typedef.Callback) : void;
     abstract findId() : number;
     abstract getURL(chapNum: number) : string;

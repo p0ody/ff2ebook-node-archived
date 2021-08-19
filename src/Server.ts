@@ -12,6 +12,7 @@ import * as constValue from "./constValue";
 import * as Logging from "./Logging";
 import * as APPROOT from "app-root-path"
 import * as SocketIO from "socket.io";
+import { AddressInfo } from "net";
 
 export class Server
 {
@@ -24,7 +25,7 @@ export class Server
     constructor()
     {
         this._app = express();
-        if (!this.setPort(process.env.PORT))
+        if (!this.setPort(<unknown>process.env.PORT as number))
         {
             Logging.alwaysLog("Invalid port, defaulting to 8000.")
             this.setPort(8000);
@@ -130,7 +131,10 @@ export class Server
 
     private onListening() 
     {
-        var addr = this._server.address();
+        var addr = this._server.address() as AddressInfo;
+        if (!addr)
+            return;
+            
         var bind = 'port ' + addr.port;
         Logging.alwaysLog('Listening on ' + bind);
     }
@@ -142,7 +146,7 @@ export class Server
 
     private socketIOInit()
     {
-        this._io = SocketIO(this._server);
+        this._io = require("socket.io")(this._server);
         this._io.attach(this._server);
         SocketHandler.socketHandler(this._io);
     }

@@ -30,7 +30,7 @@ export let searchFor = function (search: any, page: number, returnCallback: type
         },
         search: function (callback: typedef.Callback)
         {
-            var offset = (page == 1 ? "0" : (page * process.env.SEARCH_RESULT_PER_PAGE) - process.env.SEARCH_RESULT_PER_PAGE);
+            var offset = (page == 1 ? "0" : (page * <number><unknown>process.env.SEARCH_RESULT_PER_PAGE) - <number><unknown>process.env.SEARCH_RESULT_PER_PAGE);
             DBHandler.getDB().query("SELECT * FROM `fic_archive` WHERE `id` LIKE ? OR `title` LIKE ? or `author` LIKE ? ORDER BY `title` LIMIT " + offset + ", " + process.env.SEARCH_RESULT_PER_PAGE + ";", [ "%"+ search +"%", "%"+ search +"%", "%"+ search +"%" ], function (err: any, results: any
             )
             {

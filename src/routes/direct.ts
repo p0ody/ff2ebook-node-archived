@@ -8,9 +8,9 @@ import { FicInfos } from "../FicInfos";
 let router = express.Router();
 
 
-router.param(["source", "id", "type"], function ()
-{
-});
+router.param("source", function () {});
+router.param("id", function () {});
+router.param("type", function () {});
 
 router.get('/', function (req, res)
 {

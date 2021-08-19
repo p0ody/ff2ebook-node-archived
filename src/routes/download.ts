@@ -7,9 +7,10 @@ let router = express.Router();
 let _ = require('lodash');
 
 
-router.param(["source", "id", "type"], function ()
-{
-});
+router.param("source", function () {});
+router.param("id", function () {});
+router.param("type", function () {});
+
 
 router.get('/:source/:id', function (req, res, next)
 {
